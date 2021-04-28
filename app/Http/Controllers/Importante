@@ -1,0 +1,17 @@
+Para criar classes de validação usar php artisan make:request "nome da classe"
+
+Ometodo store passa a ser assim public function store(StorePost $request),passno pela classe de validação
+e para efetivar a  validaçaõ deve-se chamar a variavel de erros na view
+Exemplo:
+@if($errors->any())
+    <ul>
+        @foreach($errors->all() as $error)
+            <li>{{$error}}</li>
+        @endforeach
+
+    </ul>
+    @endif
+
+Para não perder o input do campo ao recarregar deve-se fazer value="{{old('title')}}" dentro do input,
+assim quando recarregar ele tras a entrada anterior
+
