@@ -15,9 +15,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-//        $posts=Post::all();
+     //  $posts=Post::all();
 //    $posts=Post::paginate(1);//Paginação ,por padrão a paginação e 15
-    $posts=Post::orderby('title')->paginate();//Paginação
+//   / $posts=Post::orderby('title')->paginate();//Paginação
     $posts=Post::latest()->paginate();//Paginação
 //dd($posts);
        return view('admin.posts.index',compact('posts'));
@@ -102,5 +102,19 @@ class PostsController extends Controller
         return redirect()
             ->route('index')
             ->with('message','Post deletado com sucesso!!!');
+    }
+
+    public function search(Request $request)
+    {
+// $filters=$request->all();Pega todo array
+// $filters=$request->on(); Eu devo especificar quasi campos deve pegar
+        $filters=$request->except('_token');//Pega todo array menos o token de CSRF
+
+        $posts=Post::where('title','LIKE',"%{$request->search}%") //Esse search vem do name="search" da view index
+            ->Orwhere('content','LIKE',"%{$request->search}%")
+            ->paginate(1);
+
+        return view('admin.posts.index',compact('posts','filters'));
+
     }
 }

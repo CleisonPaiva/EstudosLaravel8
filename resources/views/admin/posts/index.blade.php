@@ -1,13 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+@extends('admin.Layouts.Template')
+@section('title','Listagem dos Posts')
+
+@section('content')
+
 <a href="{{route('create')}}">Criar Novo Post</a>
 
 <hr>
@@ -16,6 +11,12 @@
     {{session('message')}}
 </div>
 @endif
+
+<form action="{{route('search')}}" method="post">
+    @csrf
+    <input type="text" name="search" placeholder="Filtrar">
+    <button type="submit">Filtrar</button>
+</form>
 <h1>Posts</h1>
 @foreach($posts as $post)
 
@@ -37,6 +38,11 @@
 <hr>
 
 {{--Paginação--}}
-{{$posts->links()}}
-</body>
-</html>
+{{--{{$posts->links()}}--}}
+@if(isset($filters))
+    {{$posts->appends($filters)->links()}}
+@else
+    {{$posts->links()}}
+@endif
+@endsection
+
