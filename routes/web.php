@@ -14,9 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/posts',[PostsController::class,'index'])->name('inicio');
+Route::get('/posts',[PostsController::class,'index'])->name('index');
 Route::get('/posts/create',[PostsController::class,'create'])->name('create');
 Route::post('/posts/store',[PostsController::class,'store'])->name('store');
+Route::get('/posts/{id}',[PostsController::class,'show'])->name('show');
+Route::delete('/posts/{id}',[PostsController::class,'destroy'])->name('destroy');
+Route::get('/posts/edit/{id}',[PostsController::class,'edit'])->name('edit');
+Route::put('/posts/{id}',[PostsController::class,'update'])->name('update');
 
 Route::get('/', function () {
     return view('welcome');

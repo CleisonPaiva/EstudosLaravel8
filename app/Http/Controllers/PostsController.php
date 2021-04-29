@@ -15,8 +15,10 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts=Post::all();
-
+//        $posts=Post::all();
+//    $posts=Post::paginate(1);//Paginação ,por padrão a paginação e 15
+    $posts=Post::orderby('title')->paginate();//Paginação
+    $posts=Post::latest()->paginate();//Paginação
 //dd($posts);
        return view('admin.posts.index',compact('posts'));
     }
@@ -40,7 +42,8 @@ class PostsController extends Controller
     public function store(StorePost $request)
     {
         Post::create($request->all());
-        return redirect()->route('inicio');
+        return redirect()->route('index')
+            ->with('message','Post Criado com sucesso!!!');
     }
 
     /**
@@ -51,7 +54,9 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        $post=Post::findorfail($id);
+               // dd($post);
+        return view('admin.posts.show',compact('post'));
     }
 
     /**
@@ -62,7 +67,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post=Post::findorfail($id);
+        return view('admin.posts.edit',compact('post'));
     }
 
     /**
@@ -72,9 +78,14 @@ class PostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePost $request, $id)
     {
-        //
+        $post=Post::findorfail($id);
+
+        $post->update($request->all());
+        return redirect()
+            ->route('index')
+            ->with('message','Post editado com sucesso!!!');
     }
 
     /**
@@ -85,6 +96,11 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post=Post::findorfail($id);
+
+        $post->delete();
+        return redirect()
+            ->route('index')
+            ->with('message','Post deletado com sucesso!!!');
     }
 }

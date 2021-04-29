@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<h1>Novo Post</h1>
+<h1>Editando Post: {{$post->title}}</h1>
 <body>
 
 @if($errors->any())
@@ -17,19 +17,16 @@
         @endforeach
 
     </ul>
-    @endif
-@if(session('message'))
-    <div>
-        {{session('message')}}
-    </div>
 @endif
 
-<form action="{{route('store')}}" method="post">
-    @csrf
-    <input type="text" name="title" id="title" placeholder="Titulo" value="{{old('title')}}">
-    <textarea name="content" id="content" cols="30" rows="4" placeholder="Conteudo">{{old('content')}}</textarea>
-    <button type="submit">Salvar</button>
 
+<form action="{{route('update',$post->id)}}" method="post">
+    @csrf
+    @method('PUT')
+    <input type="text" name="title" id="title" placeholder="Titulo" value="{{$post->title}}">
+    <textarea name="content" id="content" cols="30" rows="4" placeholder="Conteudo">{{$post->content}}</textarea>
+    <button type="submit">Salvar</button>
+    <a href="{{route('index')}}">Voltar</a>
 </form>
 </body>
 </html>

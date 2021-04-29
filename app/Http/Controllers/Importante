@@ -1,17 +1,72 @@
+**Validações
+
 Para criar classes de validação usar php artisan make:request "nome da classe"
 
-Ometodo store passa a ser assim public function store(StorePost $request),passno pela classe de validação
-e para efetivar a  validaçaõ deve-se chamar a variavel de erros na view
-Exemplo:
-@if($errors->any())
-    <ul>
+O metodo store(Pode ser usado no STORE,CREATE e EDIT ) passa a ser assim public function store(StorePost $request),passando pela classe de validação
+e para efetivar a  validação deve-se chamar a variavel de erros na view
+-View
+    @if($errors->any())
+      <ul>
         @foreach($errors->all() as $error)
             <li>{{$error}}</li>
         @endforeach
-
-    </ul>
+       </ul>
     @endif
 
+Dentro da classe o metodo Rules serve para inserir as regras de validação
+-Classe
+  public function rules()
+    {
+        return [
+            'title'=>'required|min:1',
+            'content'=>['required','max:50'],
+        ];
+    }
 Para não perder o input do campo ao recarregar deve-se fazer value="{{old('title')}}" dentro do input,
 assim quando recarregar ele tras a entrada anterior
 
+****************************************************************************************************************
+
+**Paginação
+
+Para gerar paginação basta chamar o paginate no controler - por padrão a paginação e 15
+-Controller:
+    $posts=Post::paginate(1);
+-View
+    {{$posts->links()}}
+
+
+****************************************************************************************************************
+
+**Ordenar exibição
+
+Para ordenar a exibição do menor para o maior 'ASC' que e o padrão deve-se fazer:
+-Controller:
+    $posts=Post::orderby('title');  ou $posts=Post::orderby('title','ASC');
+Para ordenar a exibição do maior para o menor  'DESC' que e o padrão deve-se fazer:
+-Controller:
+    $posts=Post::orderby('title','DESC');
+Para ordenar do mais novo apra o mais antigo basta fazer:
+-Controller:
+    $posts=Post::latest();
+
+
+****************************************************************************************************************
+
+**Notificações
+
+Para recuperar notificações ou mensagem flash da sessão deve-se passar a mensagem para a view
+
+-Controller:
+    return redirect()
+            ->route('index')
+            ->with('message','Post Criado com sucesso!!!');
+
+-View:
+    @if(session('message'))
+        <div>
+             {{session('message')}}
+        </div>
+    @endif
+
+Nesse exemplo essa sera a mensagem exibida ao criar um novo Post

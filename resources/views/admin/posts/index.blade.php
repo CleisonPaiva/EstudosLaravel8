@@ -9,11 +9,34 @@
 </head>
 <body>
 <a href="{{route('create')}}">Criar Novo Post</a>
-<hr>
-   <h1>Posts</h1>
-@foreach($posts as $post)
-    <p>{{$post->title}}</p>
-@endforeach
 
+<hr>
+@if(session('message'))
+<div>
+    {{session('message')}}
+</div>
+@endif
+<h1>Posts</h1>
+@foreach($posts as $post)
+
+        <p>{{$post->title}} -
+        [ <a href="{{route('show',$post->id)}}">Ver</a>] ||
+
+            [ <a href="{{route('edit',$post->id)}}">Editar</a>] ||
+
+
+    <form action="{{route('destroy',$post->id)}}" method="post">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Deletar</button>
+    </form>
+        </p>
+
+
+@endforeach
+<hr>
+
+{{--Paginação--}}
+{{$posts->links()}}
 </body>
 </html>
