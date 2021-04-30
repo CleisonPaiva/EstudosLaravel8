@@ -70,3 +70,13 @@ Para recuperar notificações ou mensagem flash da sessão deve-se passar a mens
     @endif
 
 Nesse exemplo essa sera a mensagem exibida ao criar um novo Post
+
+**Adicionar uma nova coluna na tabela sem preder os dados existentes
+php artisan make:migration add_image_table_"nome da tabela" --table="nome da tabela"
+-Criar
+  $table->string('image') // Nome da coluna
+            ->nullable() // Preenchimento não obrigatório
+            ->after('title'); // Ordenado após a coluna "password"
+        })
+-Deletar
+  $table->dropColumn('image');

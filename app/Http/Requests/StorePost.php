@@ -26,6 +26,7 @@ class StorePost extends FormRequest
         return [
             'title'=>'required|min:1',
             'content'=>['required','max:50'],
+            'image'=>['nullable','image'],
         ];
     }
 }
